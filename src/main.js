@@ -24,7 +24,10 @@ const btnClearQueue    = document.getElementById('btn-clear-queue');
 const btnClearComp     = document.getElementById('btn-clear-completed');
 const btnConvert       = document.getElementById('btn-convert');
 const qualitySlider    = document.getElementById('quality-slider');
-const qualityValue     = document.getElementById('quality-value');
+const qualityLabel     = document.getElementById('quality-label');
+
+const QUALITY_STEPS  = [50, 66, 80, 90, 100];
+const QUALITY_LABELS = ['minore', '', 'bilanciata', '', 'massima'];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -178,7 +181,7 @@ btnClearComp.addEventListener('click', () => {
 // ── Quality slider ────────────────────────────────────────────────────────────
 
 qualitySlider.addEventListener('input', () => {
-  qualityValue.textContent = qualitySlider.value;
+  qualityLabel.textContent = QUALITY_LABELS[parseInt(qualitySlider.value, 10)];
 });
 
 // ── Convert ───────────────────────────────────────────────────────────────────
@@ -192,7 +195,7 @@ btnConvert.addEventListener('click', async () => {
   render();
 
   const toConvert = [...queue];
-  const quality = parseInt(qualitySlider.value, 10);
+  const quality = QUALITY_STEPS[parseInt(qualitySlider.value, 10)];
 
   try {
     const results = await invoke('convert_files', {

@@ -190,7 +190,7 @@ main {
 footer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   flex-shrink: 0;
 }
 
@@ -206,7 +206,7 @@ footer {
   accent-color: var(--accent);
   cursor: pointer;
 }
-.quality-row span { color: var(--text); min-width: 24px; text-align: right; }
+.quality-row span { color: var(--text-muted); min-width: 52px; text-align: right; font-size: 12px; }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
