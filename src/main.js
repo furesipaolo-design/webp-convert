@@ -23,11 +23,62 @@ const btnFolder        = document.getElementById('btn-folder');
 const btnClearQueue    = document.getElementById('btn-clear-queue');
 const btnClearComp     = document.getElementById('btn-clear-completed');
 const btnConvert       = document.getElementById('btn-convert');
-const qualitySlider    = document.getElementById('quality-slider');
-const qualityLabel     = document.getElementById('quality-label');
 
-const QUALITY_STEPS  = [50, 66, 80, 90, 100];
-const QUALITY_LABELS = ['minore', '', 'bilanciata', '', 'massima'];
+const QUALITY_STEPS = [50, 66, 80, 90, 100];
+let currentQualityIndex = 2;
+
+const qualityDotItems  = document.querySelectorAll('.quality-dot-item');
+const qualityTrackFill = document.getElementById('quality-track-fill');
+
+function renderQualitySlider() {
+  qualityDotItems.forEach((item, i) => {
+    item.classList.toggle('active', i === currentQualityIndex);
+    item.classList.toggle('past',   i < currentQualityIndex);
+  });
+  qualityTrackFill.style.width = `calc(${currentQualityIndex / 4} * (100% - 10px))`;
+}
+
+function qualityIndexFromX(clientX) {
+  const dotsEl = document.querySelector('.quality-dots');
+  const rect = dotsEl.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+  return Math.round(pct * 4);
+}
+
+const qualityCustomEl = document.querySelector('.quality-custom');
+
+qualityCustomEl.addEventListener('mousedown', (e) => {
+  e.preventDefault();
+  currentQualityIndex = qualityIndexFromX(e.clientX);
+  renderQualitySlider();
+
+  function onMove(e) {
+    currentQualityIndex = qualityIndexFromX(e.clientX);
+    renderQualitySlider();
+  }
+  function onUp() {
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseup', onUp);
+  }
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onUp);
+});
+
+qualityCustomEl.addEventListener('touchstart', (e) => {
+  currentQualityIndex = qualityIndexFromX(e.touches[0].clientX);
+  renderQualitySlider();
+
+  function onMove(e) {
+    currentQualityIndex = qualityIndexFromX(e.touches[0].clientX);
+    renderQualitySlider();
+  }
+  function onEnd() {
+    window.removeEventListener('touchmove', onMove);
+    window.removeEventListener('touchend', onEnd);
+  }
+  window.addEventListener('touchmove', onMove, { passive: true });
+  window.addEventListener('touchend', onEnd);
+}, { passive: true });
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -178,12 +229,6 @@ btnClearComp.addEventListener('click', () => {
   render();
 });
 
-// ── Quality slider ────────────────────────────────────────────────────────────
-
-qualitySlider.addEventListener('input', () => {
-  qualityLabel.textContent = QUALITY_LABELS[parseInt(qualitySlider.value, 10)];
-});
-
 // ── Convert ───────────────────────────────────────────────────────────────────
 
 btnConvert.addEventListener('click', async () => {
@@ -195,7 +240,7 @@ btnConvert.addEventListener('click', async () => {
   render();
 
   const toConvert = [...queue];
-  const quality = QUALITY_STEPS[parseInt(qualitySlider.value, 10)];
+  const quality = QUALITY_STEPS[currentQualityIndex];
 
   try {
     const results = await invoke('convert_files', {
@@ -232,6 +277,7 @@ btnConvert.addEventListener('click', async () => {
 // ── Init ──────────────────────────────────────────────────────────────────────
 
 async function init() {
+  renderQualitySlider();
   try {
     const info = await invoke('detect_tools');
     cwebpFound = info.found;

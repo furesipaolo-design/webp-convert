@@ -48,10 +48,32 @@
       </main>
 
       <footer>
-        <div class="quality-row">
-          <label for="quality-slider">Qualità</label>
-          <input type="range" id="quality-slider" min="0" max="4" step="1" value="2" />
-          <span id="quality-label">bilanciata</span>
+        <div class="quality-section">
+          <span class="quality-title">Qualità:</span>
+          <div class="quality-custom">
+            <div class="quality-track-bg"></div>
+            <div class="quality-track-fill" id="quality-track-fill"></div>
+            <div class="quality-dots">
+              <div class="quality-dot-item" data-index="0">
+                <div class="quality-dot"></div>
+                <span class="quality-dot-label">Salva spazio</span>
+              </div>
+              <div class="quality-dot-item" data-index="1">
+                <div class="quality-dot"></div>
+              </div>
+              <div class="quality-dot-item active" data-index="2">
+                <div class="quality-dot"></div>
+                <span class="quality-dot-label">Bilanciata</span>
+              </div>
+              <div class="quality-dot-item" data-index="3">
+                <div class="quality-dot"></div>
+              </div>
+              <div class="quality-dot-item" data-index="4">
+                <div class="quality-dot"></div>
+                <span class="quality-dot-label">Massima</span>
+              </div>
+            </div>
+          </div>
         </div>
         <button id="btn-convert" class="btn btn--primary" disabled>Converti</button>
       </footer>
