@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebP Convert</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="/main.js" defer></script>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <h1>WebP Convert</h1>
+      </header>
+
+      <main>
+        <!-- Drop zone -->
+        <div id="drop-zone" class="drop-zone">
+          <div class="drop-zone__icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M16 12l-4-4m0 0l-4 4m4-4v12"/>
+            </svg>
+          </div>
+          <p class="drop-zone__text">Trascina file JPG / PNG qui</p>
+          <div class="drop-zone__btns">
+            <button id="btn-files" class="btn btn--secondary">Seleziona file</button>
+            <button id="btn-folder" class="btn btn--secondary">Seleziona cartella</button>
+          </div>
+        </div>
+
+        <!-- Queue -->
+        <div id="queue-section" class="section hidden">
+          <div class="section__header">
+            <span class="section__title">In coda <span id="queue-count" class="count">0</span></span>
+            <button id="btn-clear-queue" class="btn-text">Svuota</button>
+          </div>
+          <ul id="queue-list" class="file-list"></ul>
+        </div>
+
+        <!-- Completed -->
+        <div id="completed-section" class="section hidden">
+          <div class="section__header">
+            <span class="section__title">Completati <span id="completed-count" class="count">0</span></span>
+            <button id="btn-clear-completed" class="btn-text">Svuota</button>
+          </div>
+          <ul id="completed-list" class="file-list"></ul>
+        </div>
+      </main>
+
+      <footer>
+        <div class="quality-row">
+          <label for="quality-slider">Qualità</label>
+          <input type="range" id="quality-slider" min="50" max="100" value="80" />
+          <span id="quality-value">80</span>
+        </div>
+        <button id="btn-convert" class="btn btn--primary" disabled>Converti</button>
+      </footer>
+    </div>
+  </body>
+</html>
